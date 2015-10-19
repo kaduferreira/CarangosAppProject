@@ -10,6 +10,7 @@ import java.util.List;
 
 import br.com.caelum.fj59.carangos.R;
 import br.com.caelum.fj59.carangos.adapter.PublicacaoAdapter;
+import br.com.caelum.fj59.carangos.app.CarangosApplication;
 import br.com.caelum.fj59.carangos.modelo.Publicacao;
 import br.com.caelum.fj59.carangos.tasks.BuscaMaisPublicacoesDelegate;
 import br.com.caelum.fj59.carangos.tasks.BuscaMaisPublicacoesTask;
@@ -45,6 +46,11 @@ public class MainActivity extends ActionBarActivity implements BuscaMaisPublicac
     public void lidaComErro(Exception e){
         e.printStackTrace();
         Toast.makeText(this, "Erro ao buscar dados", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public CarangosApplication getCarangosApplication(){
+        return (CarangosApplication) getApplication();
     }
 
     public void atualizaListaCom(List<Publicacao> publicacoes) {

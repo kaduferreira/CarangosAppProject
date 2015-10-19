@@ -22,6 +22,7 @@ public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publi
 
     public BuscaMaisPublicacoesTask(BuscaMaisPublicacoesDelegate delegate) {
         this.delegate = delegate;
+        this.delegate.getCarangosApplication().registra(this);
     }
 
     @Override
@@ -49,5 +50,7 @@ public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publi
         } else {
             this.delegate.lidaComErro(this.erro);
         }
+
+        delegate.getCarangosApplication().desregistra(this);
     }
 }
