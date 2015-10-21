@@ -10,7 +10,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
+
+import javax.security.auth.callback.Callback;
 
 import br.com.caelum.fj59.carangos.R;
 import br.com.caelum.fj59.carangos.modelo.Publicacao;
@@ -49,6 +53,8 @@ public class PublicacaoAdapter extends BaseAdapter {
         View linha = LayoutInflater.from(context).inflate(R.layout.
                 publicacao_linha_par, viewGroup, false);
 
+        ViewHolder holder = new ViewHolder(linha);
+
         ImageView foto = (ImageView) linha.findViewById(R.id.foto);
         TextView mensagem = (TextView) linha.findViewById(R.id.mensagem);
         TextView nomeAutor = (TextView) linha.findViewById(R.id.nome_autor);
@@ -58,7 +64,11 @@ public class PublicacaoAdapter extends BaseAdapter {
         mensagem.setText(publicacao.getMensagem());
         nomeAutor.setText(publicacao.getAutor().getNome());
 
-        foto.setImageDrawable(this.context.getResources().getDrawable(R.drawable.ic_car));
+        progress.setVisibility(View.VISIBLE);
+        Picasso.with(this.context)
+                .load(publicacao.getFoto())
+                .fit()
+                .into(foto, new VerificadorDeRetorno(holder));
 
         int idImagem = 0;
         switch (publicacao.getEstadoDeHumor()) {
@@ -95,6 +105,24 @@ public class PublicacaoAdapter extends BaseAdapter {
             this.mensagem = (TextView) view.findViewById(R.id.mensagem);
             this.nomeAutor = (TextView) view.findViewById(R.id.nome_autor);
             this.progress = (ProgressBar) view.findViewById(R.id.progress);
+        }
+    }
+
+    class VerificadorDeRetorno implements com.squareup.picasso.Callback {
+        private ViewHolder holder;
+
+        public VerificadorDeRetorno(ViewHolder holder){
+            this.holder = holder;
+        }
+
+        @Override
+        public void onSuccess() {
+            holder.progress.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onError() {
+
         }
     }
 }
